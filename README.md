@@ -1,4 +1,4 @@
 # IT202-008
-Assignments for IT202 taught by Matthew Toegel  
-Nicholas Fortis  
-It works!
+1. IT202-008  
+2. Nicholas Fortis  
+3. I like to code!
