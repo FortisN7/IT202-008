@@ -4,15 +4,25 @@
 <head>
     <title>Problem 1</title>
     <meta charset="utf-8" />
-    <script>
+    <script>   
         window.addEventListener("load", () => {
             console.log("loaded via javascript");
             //TODO: add any extra onload processing you may need here
+            addEventListener('click', (event) => {getCurrentSelection();});
         });
         function getCurrentSelection() {
             setTimeout(() => {
                 //added this delay here as some solutions may require it to update properly (i.e., click code may complete before the navigation changes)
                 //TODO: add code for processing the current selection 
+                
+                let url = window.location.href;
+                if (url.lastIndexOf("#") == -1) {
+                    updateCurrentPage("start");
+                }
+                else {
+                    let siteLocation = url.substr(url.lastIndexOf("#")+1);
+                    updateCurrentPage(siteLocation);
+                }
 
                 //Note: likely you'll want to call updateCurrentPage towards the end
             }, 100);
@@ -20,6 +30,42 @@
     </script>
     <style>
         /* TODO: make edits here */
+        nav li {
+            display: inline-block;          
+        }
+
+        nav ul {
+            list-style: none;
+        }
+
+        nav ul a:hover {
+            color: purple;
+        }
+
+        nav {
+            background-color: yellow;
+        }
+
+        nav li::first-letter {
+            text-transform: uppercase;
+        }
+
+        h3~ul li::marker {
+            content: '✓ ';
+        }
+
+        h1::first-letter {
+            text-transform: uppercase;
+        }
+        
+        body {
+            /* Additional feature using https://www.magicpattern.design/tools/css-backgrounds */
+            background-color: #ffffff;
+            opacity: 1;
+            background-image:  radial-gradient(#4bf745 1.1px, transparent 1.1px), radial-gradient(#4bf745 1.1px, #eeeeee 1.1px);
+            background-size: 44px 44px;
+            background-position: 0 0,22px 22px;
+        }      
     </style>
     <!-- make the necessary edits above this line -->
 
