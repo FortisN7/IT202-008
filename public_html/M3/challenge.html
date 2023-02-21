@@ -8,6 +8,7 @@
         window.addEventListener("load", () => {
             console.log("loaded via javascript");
             //TODO: add any extra onload processing you may need here
+            getCurrentSelection();
             addEventListener('click', (event) => {getCurrentSelection();});
         });
         function getCurrentSelection() {
