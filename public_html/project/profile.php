@@ -29,7 +29,7 @@ if (isset($_POST["save"])) {
         try {
             $stmt->execute($params);
             flash("Profile saved", "success");
-        } catch (Exception $e) {
+        } catch (PDOException $e) {
             if ($e->errorInfo[1] === 1062) {
                 //https://www.php.net/manual/en/function.preg-match.php
                 preg_match("/Users.(\w+)/", $e->errorInfo[2], $matches);
@@ -90,7 +90,7 @@ if (isset($_POST["save"])) {
                         flash("Current password is invalid", "warning");
                     }
                 }
-            } catch (Exception $e) {
+            } catch (PDOException $e) {
                 //comment out the echo when dev is done
                 echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
                 flash("An unexpected error occurred, please try again", "danger");

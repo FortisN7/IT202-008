@@ -59,8 +59,8 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                     $hash = $user["password"];
                     unset($user["password"]);
                     if (password_verify($password, $hash)) {
-                        flash("Welcome $email");
-                        //login bug happening here
+                        flash("Welcome " . get_username());
+                        //login bug happening here was fixed by setting $LocalWorks = false in nav.php
                         $_SESSION["user"] = $user;
                         die(header("Location: home.php"));
                     } else {
