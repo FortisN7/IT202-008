@@ -61,6 +61,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                     if (password_verify($password, $hash)) {
                         //flash("Welcome $email");
                         $_SESSION["user"] = $user; //sets our session data from db
+                        //login bug happening here was fixed by setting $LocalWorks = false in nav.php
                         try {
                             //lookup potential roles
                             $stmt = $db->prepare("SELECT Roles.name FROM Roles 
