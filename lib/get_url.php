@@ -7,6 +7,6 @@ function get_url($dest)
         return $dest;
     }
     //handle relative path
-    //return "$BASE_PATH/$dest";
-    return "$BASE_PATH$dest";
+    return "$BASE_PATH/$dest";
+    //return "$BASE_PATH$dest";
 }
