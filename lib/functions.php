@@ -3,7 +3,7 @@
 require_once(__DIR__ . "/db.php");
 //This is going to be a helper for redirecting to our base project path since it's nested in another folder
 //This MUST match the folder name exactly
-$BASE_PATH = '/project/';
+$BASE_PATH = '/project';
 
 //TODO 4: Flash Message Helpers
 require_once(__DIR__ . "/flash_messages.php");
@@ -21,4 +21,6 @@ require_once(__DIR__ . "/user_helpers.php");
 require_once(__DIR__ . "/duplicate_user_details.php");
 //reset session
 require_once(__DIR__ . "/reset_session.php");
+
+require_once(__DIR__ . "/get_url.php")
 ?>
