@@ -14,4 +14,6 @@ require_once(__DIR__ . "/sanitizers.php");
 require_once(__DIR__ . "/user_helpers.php");
 //TODO 4: Flash Message Helpers
 require_once(__DIR__ . "/flash_messages.php");
+
+require_once(__DIR__ . "/get_url.php")
 ?>
