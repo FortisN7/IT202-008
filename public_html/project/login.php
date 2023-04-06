@@ -13,11 +13,65 @@ require(__DIR__ . "/../../partials/nav.php");
     <input type="submit" value="Login" />
 </form>
 <script>
+    const submit = document.getElementById("submit");
+    submit.addEventListener("click", validate);
+
     function validate(form) {
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
+        e.preventDefault();
+
+        let noError = true;
         let email = form.email.value;
-        return true;
+        let password = form.password.value;
+        let confirm = form.confirm.value;
+        let username = form.username.value;
+
+        // Uses flash() from helpers.js
+        if (username == "") {
+            flash("Username must not be empty");
+            noError = false;
+        }
+        if (strlen(username) < 3) {
+            flash("Username is too short");
+            noError = false;
+        }
+        if (strlen(username) > 30) {
+            flash("Username is too long");
+            noError = false;
+        }
+
+        if (email == "") {
+            flash("Email must not be empty");
+            noError = false;
+        }
+        if (strlen(email) > 100) {
+            flash("Username is too long");
+            noError = false;
+        }
+
+        if (password == "") {
+            flash("Password must not be empty");
+            noError = false;
+        }
+        if (confirm == "") {
+            flash("Confirm password must not be empty");
+            noError = false;
+        }
+        if (strlen(password) < 8) {
+            flash("Password is too short");
+            noError = false;
+        }
+        if (strlen(password) > 60) {
+            flash("Password is too long");
+            noError = false;
+        }
+        if (strlen(password) > 0 && password !== confirm) {
+            flash("Passwords must match");
+            noError = false;
+        }
+
+        return noError;
     }
 </script>
 <?php

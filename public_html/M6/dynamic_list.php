@@ -1,5 +1,5 @@
 <?php
-require("nav.php");
+require_once("nav.php");
 $db = getDB();
 //generally try to avoid SELECT *, but this is about being dynamic so I'm using it this time
 $query = "SELECT * FROM Samples LIMIT 500"; //TODO change table name and desired columns

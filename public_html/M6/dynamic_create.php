@@ -1,5 +1,5 @@
 <?php
-require("nav.php");
+require_once("nav.php");
 //Note: this is a complex dynamic add form and is merely provided as an exploratory tool
 //It lacks in many features and fine-tuning. Do not use this in your project.
 //Extract the data yourselfs and customize your forms/data processing, etc.

@@ -1,10 +1,10 @@
 <?php
-require(__DIR__ . "/../../partials/nav.php");
+require_once(__DIR__ . "/../../partials/nav.php");
 ?>
 <form onsubmit="return validate(this)" method="POST">
     <div>
         <label for="email">Email</label>
-        <input type="email" name="email" required />
+        <input type="email" name="email" required maxlength="100" />
     </div>
     <div>
         <label for="username">Username</label>
@@ -12,11 +12,11 @@ require(__DIR__ . "/../../partials/nav.php");
     </div>
     <div>
         <label for="pw">Password</label>
-        <input type="password" id="pw" name="password" required minlength="8" />
+        <input type="password" id="pw" name="password" required minlength="8" maxlength="60" />
     </div>
     <div>
         <label for="confirm">Confirm</label>
-        <input type="password" name="confirm" required minlength="8" />
+        <input type="password" name="confirm" required minlength="8" maxlength="60" />
     </div>
     <input type="submit" value="Register" />
 </form>
@@ -24,45 +24,59 @@ require(__DIR__ . "/../../partials/nav.php");
     function validate(form) {
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
+        
         let noError = true;
-        let email = form.email;
-        let password = form.password;
-        let confirm = form.confirm;
-        let username = form.username;
+        let email = form.email.value;
+        let password = form.password.value;
+        let confirm = form.confirm.value;
+        let username = form.username.value;
+        console.log(email);
+        console.log("OVER HERE!!");
 
-        // Can't actually use flash in js, need to edit eventually
+        // Uses flash() from helpers.js
         if (username == "") {
-            flash("Username must not be empty", "danger");
+            flash("Username must not be empty");
             noError = false;
         }
-        if (strlen(username) < 3) {
-            flash("Username is too short", "danger");
+        if (username.length < 3) {
+            flash("Username is too short");
             noError = false;
         }
-        if (strlen(username) > 30) {
-            flash("Usernmae is too long", "danger");
+        if (username.length > 30) {
+            flash("Username is too long");
             noError = false;
         }
         if (email == "") {
-            flash("Email must not be empty", "danger");
+            flash("Email must not be empty");
             noError = false;
         }
-        // if Email regex
+        if (email.length > 100) {
+            flash("Username is too long");
+            noError = false;
+        }
+        if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+            flash("Must be a valid email");
+            noError = false;
+        }
+
         if (password == "") {
-            flash("Password must not be empty", "danger");
+            flash("Password must not be empty");
             noError = false;
         }
         if (confirm == "") {
-            flash("Confirm password must not be empty", "danger");
+            flash("Confirm password must not be empty");
             noError = false;
         }
-        if (strlen(password) < 8) {
-            flash("Password is too short", "danger");
-            $hasError = true;
+        if (password.length < 8) {
+            flash("Password is too short");
+            noError = false;
         }
-
-        if (strlen(password) > 0 && password !== confirm) {
-            flash("Passwords must match", "danger");
+        if (password.length > 60) {
+            flash("Password is too long");
+            noError = false;
+        }
+        if (password.length > 0 && password !== confirm) {
+            flash("Passwords must match");
             noError = false;
         }
 
@@ -94,12 +108,12 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm
         flash("Invalid email address", "danger");
         $hasError = true;
     }
-    if (!preg_match('/^[a-z0-9_-]{3,16}$/i', $username)) {
-        flash("Username must only be alphanumeric and can only contain - or _", "danger");
+    if (!preg_match('/^[a-z0-9_-]{3,30}$/i', $username)) {
+        flash("Username must only be alphanumeric and can only contain - or _. Username must also only be 3-30 characters.", "danger");
         $hasError = true;
     }
     if (empty($password)) {
-        flash("password must not be empty", "danger");
+        flash("Password must not be empty", "danger");
         $hasError = true;
     }
     if (empty($confirm)) {
@@ -110,9 +124,7 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm
         flash("Password too short", "danger");
         $hasError = true;
     }
-    if (
-        strlen($password) > 0 && $password !== $confirm
-    ) {
+    if (strlen($password) > 0 && $password !== $confirm) {
         flash("Passwords must match", "danger");
         $hasError = true;
     }
