@@ -1,52 +1,55 @@
 <?php
-require(__DIR__ . "/../../partials/nav.php");
+require_once(__DIR__ . "/../../partials/nav.php");
 ?>
-<form onsubmit="return validate(this)" method="POST">
-    <div>
-        <label for="email">Email/Username</label>
-        <input type="text" name="email" required />
-    </div>
-    <div>
-        <label for="pw">Password</label>
-        <input type="password" id="pw" name="password" required minlength="8" />
-    </div>
-    <input type="submit" value="Login" />
-</form>
+<div class="container-fluid">
+    <h1>Login</h1>
+    <form onsubmit="return validate(this)" method="POST">
+        <div class="mb-3">
+            <label class="form-label" for="email">Username/Email</label>
+            <input class="form-control" type="text" id="email" name="email" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="pw">Password</label>
+            <input class="form-control" type="password" id="pw" name="password" required minlength="8" />
+        </div>
+        <input type="submit" class="mt-3 btn btn-primary" value="Login" />
+    </form>
+</div>
 <script>
-    const submit = document.getElementById("submit");
-    submit.addEventListener("click", validate);
-
     function validate(form) {
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
-        e.preventDefault();
-
+        
         let noError = true;
         let email = form.email.value;
         let password = form.password.value;
         let confirm = form.confirm.value;
-        let username = form.username.value;
 
         // Uses flash() from helpers.js
         if (username == "") {
             flash("Username must not be empty");
             noError = false;
         }
-        if (strlen(username) < 3) {
+        if (username.length < 3) {
             flash("Username is too short");
             noError = false;
         }
-        if (strlen(username) > 30) {
+        if (username.length > 30) {
             flash("Username is too long");
             noError = false;
         }
-
         if (email == "") {
             flash("Email must not be empty");
             noError = false;
         }
-        if (strlen(email) > 100) {
+        if (email.length > 100) {
             flash("Username is too long");
+            noError = false;
+        }
+        //if has @ do smtg
+        //else check for username
+        if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+            flash("Must be a valid email");
             noError = false;
         }
 
@@ -58,15 +61,15 @@ require(__DIR__ . "/../../partials/nav.php");
             flash("Confirm password must not be empty");
             noError = false;
         }
-        if (strlen(password) < 8) {
+        if (password.length < 8) {
             flash("Password is too short");
             noError = false;
         }
-        if (strlen(password) > 60) {
+        if (password.length > 60) {
             flash("Password is too long");
             noError = false;
         }
-        if (strlen(password) > 0 && password !== confirm) {
+        if (password.length > 0 && password !== confirm) {
             flash("Passwords must match");
             noError = false;
         }
