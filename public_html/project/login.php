@@ -26,32 +26,40 @@ require_once(__DIR__ . "/../../partials/nav.php");
         let confirm = form.confirm.value;
 
         // Uses flash() from helpers.js
-        if (username == "") {
-            flash("Username must not be empty");
-            noError = false;
+        if (email.indexOf("@") !== -1) {
+            //treat input as email
+            if (email == "") {
+                flash("Email must not be empty");
+                noError = false;
+            }
+            if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+                flash("Must be a valid email");
+                noError = false;
+            }
+            if (email.length < 3) {
+                flash("Email is too short");
+                noError = false;
+            }
+            if (email.length > 100) {
+                flash("Email is too long");
+                noError = false;
+            }
         }
-        if (username.length < 3) {
-            flash("Username is too short");
-            noError = false;
-        }
-        if (username.length > 30) {
-            flash("Username is too long");
-            noError = false;
-        }
-        if (email == "") {
-            flash("Email must not be empty");
-            noError = false;
-        }
-        if (email.length > 100) {
-            flash("Username is too long");
-            noError = false;
-        }
-        //if has @ do smtg
-        //else check for username
-        if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
-            flash("Must be a valid email");
-            noError = false;
-        }
+        else {
+            //treat input as username
+            if (email == "") {
+                flash("Username must not be empty");
+                noError = false;
+            }
+            if (email.length < 3) {
+                flash("Username is too short");
+                noError = false;
+            }
+            if (email.length > 30) {
+                flash("Username is too long");
+                noError = false;
+            }
+        } 
 
         if (password == "") {
             flash("Password must not be empty");
