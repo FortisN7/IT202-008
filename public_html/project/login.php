@@ -23,7 +23,6 @@ require_once(__DIR__ . "/../../partials/nav.php");
         let noError = true;
         let email = form.email.value;
         let password = form.password.value;
-        let confirm = form.confirm.value;
 
         // Uses flash() from helpers.js
         if (email.indexOf("@") !== -1) {
@@ -65,20 +64,12 @@ require_once(__DIR__ . "/../../partials/nav.php");
             flash("Password must not be empty");
             noError = false;
         }
-        if (confirm == "") {
-            flash("Confirm password must not be empty");
-            noError = false;
-        }
         if (password.length < 8) {
             flash("Password is too short");
             noError = false;
         }
         if (password.length > 60) {
             flash("Password is too long");
-            noError = false;
-        }
-        if (password.length > 0 && password !== confirm) {
-            flash("Passwords must match");
             noError = false;
         }
 
