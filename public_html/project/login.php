@@ -152,7 +152,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                         flash("Invalid password", "danger");
                     }
                 } else {
-                    flash("Email not found", "danger");
+                    flash("Username/Email not found", "danger");
                 }
             }
         } catch (Exception $e) {
