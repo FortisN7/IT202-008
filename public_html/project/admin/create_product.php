@@ -51,7 +51,7 @@ if (isset($_POST["name"]) && isset($_POST["submit"])) {
 }
 ?>
 <div class="container-fluid">
-    <h1>Create Product</h1>
+    <h1 class="title">Create Product</h1>
     <!-- (name, description, category, stock, unit_price, image, visibility [true, false]) -->
     <form method="POST">
         <div class="mb-3">
