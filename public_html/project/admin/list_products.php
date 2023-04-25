@@ -53,6 +53,7 @@ try {
             <th>Visibility</th>
             <th>Created</th>
             <th>Modified</th>
+            <th>View</th>
             <th>Edit</th>
         </thead>
         <tbody>
@@ -64,7 +65,7 @@ try {
             <?php else : ?>
                 <?php foreach ($products as $product) : ?>
                     <tr>
-                        <td><?php se($product, "id"); ?></td>
+                        <td><?php se($product, "id") ?></td>
                         <td><?php se($product, "name"); ?></td>
                         <td><?php se($product, "description"); ?></td>
                         <td><?php se($product, "category"); ?></td>
@@ -75,7 +76,10 @@ try {
                         <td><?php se($product, "created"); ?></td>
                         <td><?php se($product, "modified"); ?></td>
                         <td>
-                            <a class="btn btn-primary" href="edit_product.php?id=<?php se($product, "id"); ?>">Edit Product</a>
+                            <a class="btn btn-primary" href="<?php echo("/project/view_product.php") ?>/?id=<?php se($product, "id"); ?>">View</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-primary" href="edit_product.php?id=<?php se($product, "id"); ?>">Edit</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

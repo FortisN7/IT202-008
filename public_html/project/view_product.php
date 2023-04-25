@@ -37,7 +37,7 @@ if ($vis == 0 && !has_role("Admin")) {
 <div class="container-fluid" style="text-align:center; padding:30px;">
     <h1 style="padding:5px;"><?php echo($name); ?></h1>
     <img src="<?php echo($image); ?>" alt="<?php echo($name);?><?php echo("-Image");?>" >
-    <h4 >Item ID: <?php echo($id); ?></h4>
+    <h4 >Product ID: <?php echo($id); ?></h4>
     <h4>Category: <?php echo($cat); ?></h4>
     <h4>Description: <?php echo($desc); ?></h4>
     <?php if ($vis == 1): ?>
@@ -52,7 +52,7 @@ if ($vis == 0 && !has_role("Admin")) {
     <div style="text-align: right; display:inline;">
         <button onclick="addToCart('<?php se($product, 'id'); ?>')" class="btn btn-primary">Add to Cart</button>
         <?php if (has_role("Admin")): ?>
-            <a class="btn btn-primary" href="<?php echo('admin/edit_product.php?id='); ?><?php echo($id);; ?>">Edit</a>
+            <a class="btn btn-primary" href="<?php echo('/project/admin/edit_product.php?id='); ?><?php echo($id);; ?>">Edit</a>
         <?php endif; ?>
     </div>
 </div>
