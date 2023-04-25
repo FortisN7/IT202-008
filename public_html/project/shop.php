@@ -13,17 +13,15 @@ if (isset($_GET["product"]) && isset($_GET["sort"])) {
         $params[":product"] = "%$search%";
     }
 
-    $sort = se($_GET, "sort", "", false);
-    if ($sort != "") {
-        $query .= " ORDER BY :sort desc";
-        $params[":sort"] = $sort;
+    if ( se($_GET, "sort", "", false) != "") {
+        $sort = se($_GET, "sort", "", false);
+        $query .= " ORDER BY $sort ASC";
     }
 }
 else if (isset($_GET["sort"])) {
-    $sort = se($_GET, "sort", "", false);
-    if ($sort != "") {
-        $query .= " ORDER BY :sort DESC";
-        $params[":sort"] = $sort;
+    if ( se($_GET, "sort", "", false) != "") {
+        $sort = se($_GET, "sort", "", false);
+        $query .= " ORDER BY $sort ASC";
     }
 }
 else if (isset($_GET["product"])) {
@@ -36,10 +34,10 @@ else if (isset($_GET["product"])) {
 
 $query .= " LIMIT 10";
 
-echo("Query: ");
-var_dump($query);
-echo("Params: ");
-var_dump($params);
+//echo("Query: ");
+//var_dump($query);
+//echo("Params: ");
+//var_dump($params);
 
 
 $stmt = $db->prepare($query);
@@ -54,7 +52,7 @@ try {
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     if ($results) {
         $products = $results;
-        var_dump($products);
+        //var_dump($products);
     }
 } catch (PDOException $e) {
     error_log(var_export($e, true));
