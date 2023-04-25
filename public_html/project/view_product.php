@@ -52,7 +52,7 @@ if ($vis == 0 && !has_role("Admin")) {
     <div style="text-align: right; display:inline;">
         <button onclick="addToCart('<?php se($product, 'id'); ?>')" class="btn btn-primary">Add to Cart</button>
         <?php if (has_role("Admin")): ?>
-            <a class="btn btn-primary" href="<?php echo('admin/edit_product.php?id='); ?><?php echo($id);; ?>">Edit</a>
+            <a class="btn btn-primary" href="<?php echo('/project/admin/edit_product.php?id='); ?><?php echo($id);; ?>">Edit</a>
         <?php endif; ?>
     </div>
 </div>
