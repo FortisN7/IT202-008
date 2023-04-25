@@ -2,7 +2,7 @@
 require_once(__DIR__ . "/../../partials/nav.php");
 ?>
 <div class="container-fluid">
-    <h1>Login</h1>
+    <h1 >Login</h1>
     <form onsubmit="return validate(this)" method="POST">
         <div class="mb-3">
             <label class="form-label" for="email">Username/Email</label>

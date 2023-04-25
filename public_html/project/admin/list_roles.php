@@ -45,7 +45,7 @@ try {
 
 ?>
 <div class="container-fluid">
-    <h1>List Roles</h1>
+    <h1 class="title">List Roles</h1>
     <form method="POST" class="row row-cols-lg-auto g-3 align-items-center">
         <div class="input-group mb-3">
             <input class="form-control" type="search" name="role" placeholder="Role Filter" />

@@ -56,10 +56,8 @@ if (isset($_POST["name"]) && isset($_POST["submit"])) {
 
 //get the table definition
 $result = [];
-//echo "<pre>" . var_export($columns, true) . "</pre>";
 $db = getDB();
 //get the item
-
 $stmt = $db->prepare("SELECT name, description, category, stock, unit_price, image, visibility FROM $TABLE_NAME where id =:id");
 try {
     $stmt->execute([":id" => $id]);
@@ -71,7 +69,7 @@ try {
         $stock = se($product, "stock", 0, false);
         $ppu = se($product, "unit_price", 0.00, false);
         $image = se($product, "image", "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png", false);
-        $vis = se($product, "visibility", 0 , false);
+        $vis = se($product, "visibility", 0, false);
     }
 } catch (PDOException $e) {
     error_log(var_export($e, true));
