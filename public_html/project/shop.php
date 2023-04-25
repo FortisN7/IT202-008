@@ -24,9 +24,10 @@ try {
     }
 </script>
 
+<?php //TODO: ADD FILTER AND SORT?>
 <div class="container-fluid">
     <h1>Shop</h1>
-    <div class="row row-cols-sm-2 row-cols-xs-1 row-cols-md-3 row-cols-lg-6 g-4">
+    <div class="row row-cols-sm-2   row-cols-xs-1 row-cols-md-3 row-cols-lg-6 g-4">
         <?php foreach ($products as $product) : ?>
             <div class="col">
                 <div class="card bg-light">
