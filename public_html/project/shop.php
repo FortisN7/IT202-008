@@ -15,13 +15,13 @@ if (isset($_GET["product"]) && isset($_GET["sort"])) {
 
     if ( se($_GET, "sort", "", false) != "") {
         $sort = se($_GET, "sort", "", false);
-        $query .= " ORDER BY $sort ASC";
+        $query .= " ORDER BY $sort";
     }
 }
 else if (isset($_GET["sort"])) {
     if ( se($_GET, "sort", "", false) != "") {
         $sort = se($_GET, "sort", "", false);
-        $query .= " ORDER BY $sort ASC";
+        $query .= " ORDER BY $sort";
     }
 }
 else if (isset($_GET["product"])) {
@@ -75,38 +75,15 @@ try {
                 <?php endif; ?>
                 <select name="sort" id="sort" style="margin-left:12px">   
                     <!-- None, Name, Category, Stock, Price -->
-                    <!-- could've added the php inline with the select statement but too lazy to fix that now -->
-                    <?php if ($sort == "name") : ?>
-                        <option type="submit" class="form-control" style="font-weight: bold;" value=""><strong>Sort By: </strong></option>
-                        <option type="submit" class="form-control" value="name" selected>Name</option>
-                        <option type="submit" class="form-control" value="category">Category</option>
-                        <option type="submit" class="form-control" value="stock">Stock</option>
-                        <option type="submit" class="form-control" value="unit_price">Price</option>
-                    <?php elseif ($sort == "category") : ?>
-                        <option type="submit" class="form-control" style="font-weight: bold;" value=""><strong>Sort By: </strong></option>
-                        <option type="submit" class="form-control" value="name">Name</option>
-                        <option type="submit" class="form-control" value="category" selected>Category</option>
-                        <option type="submit" class="form-control" value="stock">Stock</option>
-                        <option type="submit" class="form-control" value="unit_price">Price</option>
-                    <?php elseif ($sort == "stock") : ?>
-                        <option type="submit" class="form-control" style="font-weight: bold;" value=""><strong>Sort By: </strong></option>
-                        <option type="submit" class="form-control" value="name">Name</option>
-                        <option type="submit" class="form-control" value="category">Category</option>
-                        <option type="submit" class="form-control" value="stock" selected>Stock</option>
-                        <option type="submit" class="form-control" value="unit_price">Price</option>
-                    <?php elseif ($sort == "unit_price") : ?>
-                        <option type="submit" class="form-control" style="font-weight: bold;" value=""><strong>Sort By: </strong></option>
-                        <option type="submit" class="form-control" value="name">Name</option>
-                        <option type="submit" class="form-control" value="category">Category</option>
-                        <option type="submit" class="form-control" value="stock">Stock</option>
-                        <option type="submit" class="form-control" value="unit_price" selected>Price</option>
-                    <?php else : ?>
-                        <option type="submit" class="form-control" style="font-weight: bold;" value="" selected><strong>Sort By: </strong></option>
-                        <option type="submit" class="form-control" value="name">Name</option>
-                        <option type="submit" class="form-control" value="category">Category</option>
-                        <option type="submit" class="form-control" value="stock">Stock</option>
-                        <option type="submit" class="form-control" value="unit_price">Price</option>
-                    <?php endif; ?>
+                        <option type="submit" class="form-control" style="font-weight: bold;" value="" <?php if ($sort == "") : ?> selected <?php endif;?>><strong>Sort By: </strong></option>
+                        <option type="submit" class="form-control" value="unit_price DESC" <?php if ($sort == "unit_price DESC") : ?> selected <?php endif;?>>Price DESC</option>
+                        <option type="submit" class="form-control" value="unit_price ASC" <?php if ($sort == "unit_price ASC") : ?> selected <?php endif;?>>Price ASC</option>
+                        <option type="submit" class="form-control" value="stock DESC" <?php if ($sort == "stock DESC") : ?> selected <?php endif;?>>Stock DESC</option>
+                        <option type="submit" class="form-control" value="stock ASC" <?php if ($sort == "stock ASC") : ?> selected <?php endif;?>>Stock ASC</option>
+                        <option type="submit" class="form-control" value="name DESC" <?php if ($sort == "name DESC") : ?> selected <?php endif;?>>Name DESC</option>
+                        <option type="submit" class="form-control" value="name ASC" <?php if ($sort == "name ASC") : ?> selected <?php endif;?>>Name ASC</option>
+                        <option type="submit" class="form-control" value="category DESC" <?php if ($sort == "category DESC") : ?> selected <?php endif;?>>Category DESC</option>
+                        <option type="submit" class="form-control" value="category ASC" <?php if ($sort == "category ASC") : ?> selected <?php endif;?>>Category ASC</option>
                 </select>
             </div>
         </form>                     
