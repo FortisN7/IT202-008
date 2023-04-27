@@ -88,7 +88,10 @@ if (!empty($action)) {
         default:
             flash("Developer: Bug in the cart form logic", "danger");
     }
-    $_POST["action"] = ""; //not sure if necessary but makes sense to me
+    unset($_POST["action"]); //doesn't work, but makes sense to me
+    if (count($_POST) > 0) {
+        header("Location: cart.php");
+    }
 }
 $query = "SELECT cart.id, product.id as pid, product.stock, product.name, cart.unit_price, (cart.unit_price * cart.desired_quantity) as subtotal, cart.desired_quantity
 FROM Products as product JOIN Cart as cart on product.id = cart.product_id
