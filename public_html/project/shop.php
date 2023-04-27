@@ -109,11 +109,16 @@ try {
                                 <h5 class="card-title">Stock: <?php se($product, "stock"); ?></h5>
                             </div>
                             <div class="card-footer">
-                                <h5 style="display:inline;">
+                                <h5 style="display:inline-block;">
                                     Price: <?php se($product, "unit_price"); ?>
                                 </h5>
-                                <div style="text-align: right; display:inline;">
-                                    <button onclick="addToCart('<?php se($product, 'id'); ?>')" class="btn btn-primary">Add</button>
+                                <div style="text-align:left; display:inline-block;">
+                                    <form method="POST" action="cart.php" style="text-align:left; display:inline-block;">
+                                        <input type="hidden" name="product_id" value="<?php se($product, "id");?>"/>
+                                        <input type="hidden" name="action" value="add"/>
+                                        <input type="number" name="desired_quantity" value="1" min="1" max="<?php se($product, "stock");?>"/>
+                                        <input type="submit" class="btn btn-primary" value="Add"/>
+                                    </form>                               
                                     <a class="btn btn-primary" href="<?php echo('view_product.php?id='); ?><?php se($product, "id"); ?>">View</a>
                                     <?php if (has_role("Admin")): ?>
                                         <a class="btn btn-primary" href="<?php echo('admin/edit_product.php?id='); ?><?php se($product, "id"); ?>">Edit</a>
@@ -150,5 +155,7 @@ require_once(__DIR__ . "/../../partials/flash.php");
         console.log("TODO purchase product", product);
         alert("It's almost like you purchased an product, but not really");
         //TODO create JS helper to update all show-balance elements
+
+
     }
 </script>
