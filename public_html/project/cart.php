@@ -7,12 +7,13 @@ $action = strtolower(trim(se($_POST, "action","", false)));
 if (!empty($action)) {
     $db = getDB();
     switch ($action) {
+        # if item is already in cart are we allowing them to press add?
         case "add":
             $query = "INSERT INTO Cart (product_id, desired_quantity, unit_price, user_id)
-            VALUES (:iid, :dq, (SELECT cost FROM Products where id = :iid), :uid) ON DUPLICATE KEY UPDATE
+            VALUES (:pid, :dq, (SELECT unit_price FROM Products where id = :pid), :uid) ON DUPLICATE KEY UPDATE
             desired_quantity = desired_quantity + :dq";
             $stmt = $db->prepare($query);
-            $stmt->bindValue(":iid", se($_POST, "product_id", 0, false), PDO::PARAM_INT);
+            $stmt->bindValue(":pid", se($_POST, "product_id", 0, false), PDO::PARAM_INT);
             $stmt->bindValue(":dq", se($_POST, "desired_quantity", 0, false), PDO::PARAM_INT);
             $stmt->bindValue(":uid", get_user_id(), PDO::PARAM_INT);
             try {
@@ -46,9 +47,11 @@ if (!empty($action)) {
             //TODO you do this part
             //Hint: you can use the error from sql update (desired_quantity > 0) to determine if an item should be removed
             break;
+        default:
+            flash("Developer: Bug in the cart form logic", "danger");
     }
 }
-$query = "SELECT cart.id, product.stock, product.name, cart.unit_price, (cart.unit_price * cart.desired_quantity) as subtotal, cart.desired_quantity
+$query = "SELECT cart.id, product.id as pid, product.stock, product.name, cart.unit_price, (cart.unit_price * cart.desired_quantity) as subtotal, cart.desired_quantity
 FROM Products as product JOIN Cart as cart on product.id = cart.product_id
 WHERE cart.user_id = :uid";
 $db = getDB();
@@ -69,7 +72,7 @@ try {
 <div class="container-fluid">
     <h1>Cart</h1>
     <table class="table table-striped">
-        <?php $total = 0; ?>
+        <?php $total = 0.00; ?>
         <thead>
             <tr>
                 <th>Product</th>
@@ -88,17 +91,18 @@ try {
                     <form method="POST">
                         <input type="hidden" name="cart_id" value="<?php se($c, "id"); ?>" />
                         <input type="hidden" name="action" value="update" />
-                        <input type="number" name="desired_quantity" value="<?php se($c, "desired_quantity"); ?>" min="1" max="<?php se($c, "stock"); ?>" />
+                        <input type="number" name="desired_quantity" value="<?php se($c, "desired_quantity"); ?>" min="0" max="<?php se($c, "stock"); ?>" /> <!-- set to 0 so delete can handle the sql error on update -->
                         <input type="submit" class="btn btn-primary" value="Update Quantity" />
                     </form>
                 </td>
-                <?php $total += (int)se($c, "subtotal", 0, false); ?>
+                <?php $total += (float)se($c, "subtotal", 0, false); ?>
                 <td><?php se($c, "subtotal"); ?></td>
                 <td>
-                    <form method="POST">
+                    <a style="display:inline-block" class="btn btn-primary" href="<?php echo('view_product.php?id='); ?><?php se($c, "pid"); ?>">View</a>
+                    <form style="display:inline-block" method="POST">
                         <input type="hidden" name="cart_id" value="<?php se($c, "id"); ?>" />
                         <input type="hidden" name="action" value="delete" />
-                        <input type="submit" class="btn btn-danger" value="x" />
+                        <input type="submit" class="btn btn-danger" value="X" />
                     </form>
                 </td>
             </tr>
@@ -109,11 +113,13 @@ try {
             </tr>
         <?php endif; ?>
         <tr>
-            <td colspan="100%">Total: <?php se($total, null, 0); ?></td>
+            <!-- IF they have a cart, show button available at bottom to delete whole cart    align left -->
+            <td colspan="100%" style="text-align:right">Total: <?php se($total, null, 0); ?></td>
+            <!-- This is where the purchase cart button will be     align right to the right of $total -->
         </tr>
         </tbody>
     </table>
 </div>
 <?php
-require_once(__DIR__ . "/../../partials/footer.php");
+require_once(__DIR__ . "/../../partials/flash.php");
 ?>
