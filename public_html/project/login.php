@@ -2,7 +2,7 @@
 require_once(__DIR__ . "/../../partials/nav.php");
 ?>
 <div class="container-fluid">
-    <h1>Login</h1>
+    <h1 >Login</h1>
     <form onsubmit="return validate(this)" method="POST">
         <div class="mb-3">
             <label class="form-label" for="email">Username/Email</label>
@@ -147,7 +147,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                             $_SESSION["user"]["roles"] = []; //no roles
                         }
                         flash("Welcome, " . get_username());
-                        die(header("Location: home.php"));
+                        die(header("Location: home.php")); 
                     } else {
                         flash("Invalid password", "danger");
                     }

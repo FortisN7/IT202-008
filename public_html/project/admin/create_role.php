@@ -36,8 +36,8 @@ if (isset($_POST["name"]) && isset($_POST["description"])) {
             <input class="form-control" id="name" name="name" required />
         </div>
         <div class="mb-3">
-            <label class="form-label" for="d">Description</label>
-            <textarea class="form-control" name="description" id="d"></textarea>
+            <label class="form-label" for="description">Description</label>
+            <textarea class="form-control" name="description" id="description"></textarea>
         </div>
         <input type="submit" class="btn btn-primary" value="Create Role" />
     </form>
