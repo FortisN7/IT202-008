@@ -73,8 +73,17 @@ if (!empty($action)) {
             }
             break;
         case "delete-all":
-            //TODO do
-
+            $query = "DELETE FROM Cart WHERE user_id = :uid";
+            $stmt = $db->prepare($query);
+            $stmt->bindValue(":uid", get_user_id(), PDO::PARAM_INT);
+            try {
+                $stmt->execute();
+                flash("Cart deleted", "success");
+            }
+            catch (PDOException $e) {
+                error_log(var_export($e, true));
+                flash("Error deleting cart", "danger");
+            }
             break;
         default:
             flash("Developer: Bug in the cart form logic", "danger");
@@ -147,7 +156,7 @@ try {
         <tr>
         <td colspan="100%" style="text-align:right;">
             <?php if (count($cart) != 0) : ?>
-                <form method="POST" style="float:left">
+                <form method="POST" onclick="areYouSure()" style="float:left">
                     <input type="hidden" name="cart_id" value="<?php se($c, "id"); ?>" />
                     <input type="hidden" name="action" value="delete-all" />
                     <input type="submit" class="btn btn-danger" value="Empty Cart" />
@@ -155,6 +164,7 @@ try {
             <?php endif; ?>
             Total: $<?php se(number_format($total, 2)); ?>
             <?php if (count($cart) != 0) : ?>
+                <!-- TODO: Implement for Milestone3 -->
                 <!--<form method="POST" action= "checkout.php" style="display:inline-block; ">-->
                     <button onclick="checkout()" style="margin-left:10px" class="btn btn-primary">Checkout</button>
                     <!-- The question is will I need to pass data thru to the checkout page or can I just get that from the table? I can ponder this but I must get back to doing other stuff-->
@@ -174,7 +184,17 @@ require_once(__DIR__ . "/../../partials/flash.php");
 
 <script>
     //temp script for checkout button
-    function checkout(){
+    function checkout() {
         alert("You will be able to checkout soon!");
     }
+</script>
+
+<script>
+    //script to make sure the user is sure they want to delete their cart
+    function areYouSure() {
+        if (!confirm("Are you sure you want to empty your cart? This action cannot be undone.")) {
+            event.preventDefault();
+            //flash("Cart has not been deleted.", "warning"); kinda looks ugly
+        }
+    };
 </script>
