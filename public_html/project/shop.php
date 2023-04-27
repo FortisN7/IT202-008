@@ -5,40 +5,35 @@ $products = [];
 $db = getDB();
 $query = "SELECT id, name, description, category, stock, unit_price, image, visibility from Products WHERE stock > 0 AND visibility = 1";
 $params = null;
+$sort = "";
+$name_search = "";
+$category_search = "";
 
-if (isset($_GET["product"]) && isset($_GET["sort"])) {
-    $search = se($_GET, "product", "", false);
-    if ($search != "") {
-        $query .= " AND (name LIKE :product OR category LIKE :product) ";
-        $params[":product"] = "%$search%";
-    }
-
-    if ( se($_GET, "sort", "", false) != "") {
-        $sort = se($_GET, "sort", "", false);
-        $query .= " ORDER BY $sort";
+if (isset($_GET["name_search"])) {
+    $name_search = se($_GET, "name_search", "", false);
+    if ($name_search != "") {
+        $query .= " AND name LIKE :name_search";
+        $params[":name_search"] = "%$name_search%";
     }
 }
-else if (isset($_GET["sort"])) {
-    if ( se($_GET, "sort", "", false) != "") {
-        $sort = se($_GET, "sort", "", false);
-        $query .= " ORDER BY $sort";
+if (isset($_GET["category_search"])) {
+    $category_search = se($_GET, "category_search", "", false);
+    if ($category_search != "") {
+        $query .= " AND category LIKE :category_search";
+        $params[":category_search"] = "%$category_search%";
     }
 }
-else if (isset($_GET["product"])) {
-    $search = se($_GET, "product", "", false);
-    if ($search != "") {
-        $query .= " AND (name LIKE :product OR category LIKE :product) ";
-        $params[":product"] = "%$search%";
+if (isset($_GET["sort"])) {
+    if (se($_GET, "sort", "", false) != "") {
+        $sort = se($_GET, "sort", "", false);
+        $query .= " ORDER BY $sort";
     }
 }
 
 $query .= " LIMIT 10";
 
-//echo("Query: ");
 //var_dump($query);
-//echo("Params: ");
 //var_dump($params);
-
 
 $stmt = $db->prepare($query);
 try {
@@ -66,12 +61,19 @@ try {
     <div style="margin-top:20px">
         <form id="search-form" method="GET" class="row row-cols-lg-auto g-3 align-items-center" >
             <div class="input-group mb-3" >
-                <?php if (se($_GET, "product", "", false)) : ?>
-                    <input class="form-control" type="search" name="product" placeholder="Product Filter" value=<?php echo($search)?> />
-                    <input class="btn btn-primary" type="submit" value="Search"/>
+                <?php if (se($_GET, "name_search", "", false)) : ?>
+                    <input class="form-control" type="search" name="name_search" placeholder="Name Filter" value=<?php echo($name_search)?> />
+                    <input class="btn btn-primary" style="margin-right: 12px;" type="submit" value="Search Name"/>
                 <?php else : ?>
-                    <input class="form-control" type="search" name="product" placeholder="Product Filter" style="margin-right:1px" />
-                    <input class="btn btn-primary" type="submit" value="Search"/>
+                    <input class="form-control" type="search" name="name_search" placeholder="Name Filter" style="margin-right:1px" />
+                    <input class="btn btn-primary" style="margin-right: 12px;" type="submit" value="Search Name"/>
+                <?php endif; ?>
+                <?php if (se($_GET, "category_search", "", false)) : ?>
+                    <input class="form-control" type="search" name="category_search" placeholder="Category Filter" value=<?php echo($category_search)?> />
+                    <input class="btn btn-primary" type="submit" value="Search Category"/>
+                <?php else : ?>
+                    <input class="form-control" type="search" name="category_search" placeholder="Category Filter" style="margin-right:1px" />
+                    <input class="btn btn-primary" type="submit" value="Search Category"/>
                 <?php endif; ?>
                 <select name="sort" id="sort" style="margin-left:12px">   
                     <!-- None, Name, Category, Stock, Price -->
@@ -154,8 +156,6 @@ require_once(__DIR__ . "/../../partials/flash.php");
     function addToCart(product) {
         console.log("TODO purchase product", product);
         alert("It's almost like you purchased an product, but not really");
-        //TODO create JS helper to update all show-balance elements
-
-
+        //obsolete now
     }
 </script>
