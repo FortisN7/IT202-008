@@ -79,7 +79,7 @@ if (!empty($action)) {
         default:
             flash("Developer: Bug in the cart form logic", "danger");
     }
-    $action = ""; //not sure if necessary but makes sense to me
+    $_POST["action"] = ""; //not sure if necessary but makes sense to me
 }
 $query = "SELECT cart.id, product.id as pid, product.stock, product.name, cart.unit_price, (cart.unit_price * cart.desired_quantity) as subtotal, cart.desired_quantity
 FROM Products as product JOIN Cart as cart on product.id = cart.product_id
