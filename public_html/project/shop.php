@@ -5,6 +5,8 @@ $products = [];
 $db = getDB();
 $query = "SELECT id, name, description, category, stock, unit_price, image, visibility from Products WHERE stock > 0 AND visibility = 1";
 $params = null;
+$sort = "";
+$search = "";
 
 if (isset($_GET["product"]) && isset($_GET["sort"])) {
     $search = se($_GET, "product", "", false);

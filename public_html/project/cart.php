@@ -7,11 +7,11 @@ $action = strtolower(trim(se($_POST, "action","", false)));
 if (!empty($action)) {
     $db = getDB();
     switch ($action) {
-        # if item is already in cart are we allowing them to press add?
         case "add":
+            #TODO: FIX BUG WHERE REFRESH ADDS 1 TO CART
             $query = "INSERT INTO Cart (product_id, desired_quantity, unit_price, user_id)
             VALUES (:pid, :dq, (SELECT unit_price FROM Products where id = :pid), :uid) ON DUPLICATE KEY UPDATE
-            desired_quantity = desired_quantity + :dq";
+            desired_quantity = desired_quantity + :dq"; //for duplicate adds
             $stmt = $db->prepare($query);
             $stmt->bindValue(":pid", se($_POST, "product_id", 0, false), PDO::PARAM_INT);
             $stmt->bindValue(":dq", se($_POST, "desired_quantity", 0, false), PDO::PARAM_INT);
@@ -36,20 +36,50 @@ if (!empty($action)) {
                 $stmt->execute();
                 flash("Updated item quantity", "success");
             } catch (PDOException $e) {
-                //TODO handle item removal when desired_quantity is <= 0
-                //TODO handle any other update related rules per your proposal
-                error_log(var_export($e, true));
-                flash("Error updating item quantity", "danger");
+                //Hint: you can use the error from sql update (desired_quantity > 0) to determine if an item should be removed
+                
+                if ($e->errorInfo[1] == "3819") {
+                    $query = "DELETE FROM Cart WHERE user_id = :uid AND id = :cid";
+                    $stmt = $db->prepare($query);
+                    $stmt->bindValue(":uid", get_user_id(), PDO::PARAM_INT);
+                    $stmt->bindValue(":cid", se($_POST, "cart_id", 0, false), PDO::PARAM_INT);
+                    try {
+                        $stmt->execute();
+                        flash("Removed item from cart", "success");
+                    }
+                    catch (PDOException $e) {
+                        error_log(var_export($e, true));
+                        flash("Error removing item", "danger");
+                    }
+                }
+                else {
+                    error_log(var_export($e, true));
+                    flash("Error updating item quantity", "danger");
+                }  
             }
             break;
         case "delete":
-            flash("Developer: You implement this logic", "warning");
-            //TODO you do this part
-            //Hint: you can use the error from sql update (desired_quantity > 0) to determine if an item should be removed
+            $query = "DELETE FROM Cart WHERE user_id = :uid AND id = :cid";
+            $stmt = $db->prepare($query);
+            $stmt->bindValue(":uid", get_user_id(), PDO::PARAM_INT);
+            $stmt->bindValue(":cid", se($_POST, "cart_id", 0, false), PDO::PARAM_INT);
+            try {
+                $stmt->execute();
+                flash("Removed item from cart", "success");
+            }
+            catch (PDOException $e) {
+                error_log(var_export($e, true));
+                flash("Error removing item", "danger");
+            }
+            break;
+        case "delete-all":
+            //TODO do
+
             break;
         default:
             flash("Developer: Bug in the cart form logic", "danger");
     }
+    $action = ""; //not sure if necessary but makes sense to me
 }
 $query = "SELECT cart.id, product.id as pid, product.stock, product.name, cart.unit_price, (cart.unit_price * cart.desired_quantity) as subtotal, cart.desired_quantity
 FROM Products as product JOIN Cart as cart on product.id = cart.product_id
@@ -67,6 +97,7 @@ try {
     error_log(var_export($e, true));
     flash("Error fetching cart", "danger");
 }
+
 ?>
 
 <div class="container-fluid">
@@ -86,7 +117,7 @@ try {
         <?php foreach ($cart as $c) : ?>
             <tr>
                 <td><?php se($c, "name"); ?></td>
-                <td><?php se($c, "unit_price"); ?></td>
+                <td>$<?php se($c, "unit_price"); ?></td>
                 <td>
                     <form method="POST">
                         <input type="hidden" name="cart_id" value="<?php se($c, "id"); ?>" />
@@ -95,11 +126,12 @@ try {
                         <input type="submit" class="btn btn-primary" value="Update Quantity" />
                     </form>
                 </td>
-                <?php $total += (float)se($c, "subtotal", 0, false); ?>
-                <td><?php se($c, "subtotal"); ?></td>
+                <?php $total += (float)(se($c, "subtotal", 0, false)); ?>
+                <!-- There might be an adding error here, but I don't think it matters since it's insignificant and we're round at the penny for the final subtotal -->
+                <td>$<?php se($c, "subtotal"); ?></td>
                 <td>
                     <a style="display:inline-block" class="btn btn-primary" href="<?php echo('view_product.php?id='); ?><?php se($c, "pid"); ?>">View</a>
-                    <form style="display:inline-block" method="POST">
+                    <form method="POST" style="display:inline-block">
                         <input type="hidden" name="cart_id" value="<?php se($c, "id"); ?>" />
                         <input type="hidden" name="action" value="delete" />
                         <input type="submit" class="btn btn-danger" value="X" />
@@ -113,9 +145,25 @@ try {
             </tr>
         <?php endif; ?>
         <tr>
-            <!-- IF they have a cart, show button available at bottom to delete whole cart    align left -->
-            <td colspan="100%" style="text-align:right">Total: <?php se($total, null, 0); ?></td>
-            <!-- This is where the purchase cart button will be     align right to the right of $total -->
+        <td colspan="100%" style="text-align:right;">
+            <?php if (count($cart) != 0) : ?>
+                <form method="POST" style="float:left">
+                    <input type="hidden" name="cart_id" value="<?php se($c, "id"); ?>" />
+                    <input type="hidden" name="action" value="delete-all" />
+                    <input type="submit" class="btn btn-danger" value="Empty Cart" />
+                </form>            
+            <?php endif; ?>
+            Total: $<?php se(number_format($total, 2)); ?>
+            <?php if (count($cart) != 0) : ?>
+                <!--<form method="POST" action= "checkout.php" style="display:inline-block; ">-->
+                    <button onclick="checkout()" style="margin-left:10px" class="btn btn-primary">Checkout</button>
+                    <!-- The question is will I need to pass data thru to the checkout page or can I just get that from the table? I can ponder this but I must get back to doing other stuff-->
+                    <!--<input type="hidden" name="cart_id" value="<?php //se($c, "id"); ?>" />-->
+                    <!--<input type="hidden" name="action" value="delete-all" />-->
+                    <!--<input type="submit" class="btn btn-danger" value="X" />-->
+                <!--</form>-->
+            <?php endif; ?>
+        </td>
         </tr>
         </tbody>
     </table>
@@ -123,3 +171,10 @@ try {
 <?php
 require_once(__DIR__ . "/../../partials/flash.php");
 ?>
+
+<script>
+    //temp script for checkout button
+    function checkout(){
+        alert("You will be able to checkout soon!");
+    }
+</script>
