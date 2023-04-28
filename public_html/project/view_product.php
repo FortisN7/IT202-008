@@ -3,6 +3,7 @@ require_once(__DIR__ . "/../../partials/nav.php");
 
 $TABLE_NAME = "Products";
 $id = se($_GET, "id", -1, false);
+$ppu = 0.00;
 
 //get the table definition
 $result = [];
@@ -47,8 +48,8 @@ if ($vis == 0 && !has_role("Admin")) {
     <?php endif; ?>
     <h4>Created: <?php echo($created); ?></h4>
     <h4>Modified: <?php echo($modified); ?></h4>
-    <h4>Stock: <?php echo($stock);; ?></h4>
-    <h4>Price: $<?php echo($ppu); ?></h4>
+    <h4>Stock: <?php echo($stock); ?></h4>
+    <h4>Price: $<?php se(number_format($ppu, 2)); ?></h4>
     <div>
         <?php if ($vis == 1): ?>
             <form method="POST" action="cart.php">
