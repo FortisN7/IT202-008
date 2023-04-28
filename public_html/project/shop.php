@@ -41,6 +41,7 @@ try {
     if ($params == null) {
         $stmt->execute();
     }
+    //nff4 4/28/23
     else {
         $stmt->execute($params);
     }
@@ -119,6 +120,7 @@ try {
                                     <form method="POST" action="cart.php" style="text-align:left; display:inline-block;">
                                         <input type="hidden" name="product_id" value="<?php se($product, "id");?>"/>
                                         <input type="hidden" name="action" value="add"/>
+                                        <!-- <input type="hidden" name="stock" value ="<?php se($product, "stock");?>"/> -->
                                         <input type="number" name="desired_quantity" value="1" min="1" max="<?php se($product, "stock");?>"/>
                                         <input type="submit" class="btn btn-primary" value="Add"/>
                                     </form>                               
