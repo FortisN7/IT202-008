@@ -113,7 +113,7 @@ try {
                             </div>
                             <div class="card-footer">
                                 <h5 style="display:inline-block;">
-                                    Price: $<?php se($product, "unit_price"); ?>
+                                    Price: $<?php $ppu = se($product, "unit_price", 0.00, false); echo(number_format($ppu, 2)); ?>
                                 </h5>
                                 <div style="text-align:left; display:inline-block;">
                                     <form method="POST" action="cart.php" style="text-align:left; display:inline-block;">
