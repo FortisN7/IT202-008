@@ -109,7 +109,7 @@ try {
                             <div class="card-body">
                                 <h5 class="card-title">Category: <?php se($product, "category"); ?></h5>
                                 <!-- <h5 class="card-title">Description: <?php //se($product, "description"); ?></h5> -->
-                                <h5 class="card-title">Stock: <?php se($product, "stock"); ?></h5>
+                                <h5 class="card-title">Stock: <?php $stock = se($product, "stock", 0, false); echo(number_format($stock)); ?></h5>
                             </div>
                             <div class="card-footer">
                                 <h5 style="display:inline-block;">
