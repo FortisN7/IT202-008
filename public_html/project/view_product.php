@@ -48,7 +48,7 @@ if ($vis == 0 && !has_role("Admin")) {
     <?php endif; ?>
     <h4>Created: <?php echo($created); ?></h4>
     <h4>Modified: <?php echo($modified); ?></h4>
-    <h4>Stock: <?php echo($stock); ?></h4>
+    <h4>Stock: <?php se(number_format($stock)); ?></h4>
     <h4>Price: $<?php se(number_format($ppu, 2)); ?></h4>
     <div>
         <?php if ($vis == 1): ?>
