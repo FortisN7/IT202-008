@@ -8,15 +8,18 @@ if (!empty($action)) {
     $db = getDB();
     switch ($action) {
         case "add":
-            #TODO: FIX BUG WHERE REFRESH ADDS 1 TO CART
+            //only ever runs first time from shop page
+
             $query = "INSERT INTO Cart (product_id, desired_quantity, unit_price, user_id)
-            VALUES (:pid, :dq, (SELECT unit_price FROM Products where id = :pid), :uid) ON DUPLICATE KEY UPDATE
-            desired_quantity = desired_quantity + :dq"; //for duplicate adds
+            VALUES (:pid, :dq, (SELECT unit_price FROM Products WHERE id = :pid), :uid)
+            ON DUPLICATE KEY UPDATE desired_quantity = IF((desired_quantity + :dq) > (SELECT stock FROM Products WHERE id = :pid), desired_quantity, desired_quantity + :dq)"; //added logic for over stock
+            
             $stmt = $db->prepare($query);
             $stmt->bindValue(":pid", se($_POST, "product_id", 0, false), PDO::PARAM_INT);
             $stmt->bindValue(":dq", se($_POST, "desired_quantity", 0, false), PDO::PARAM_INT);
             $stmt->bindValue(":uid", get_user_id(), PDO::PARAM_INT);
             try {
+                //BUG: Using if inside of the SQL query will always make it so it shows as added item even if it was not.
                 $stmt->execute();
                 flash("Added item to cart", "success");
             } catch (PDOException $e) {
@@ -88,10 +91,11 @@ if (!empty($action)) {
         default:
             flash("Developer: Bug in the cart form logic", "danger");
     }
-    unset($_POST["action"]); //doesn't work, but makes sense to me
-    if (count($_POST) > 0) {
-        header("Location: cart.php");
-    }
+
+    //BUG: Having this prevents the refresh add bug, but it also prevents my flash logic. I need flash logic for so the refresh add bug will just have to stay.
+    //if (count($_POST) > 0) {
+        //header("Location: cart.php");
+    //}
 }
 $query = "SELECT cart.id, product.id as pid, product.stock, product.name, cart.unit_price, (cart.unit_price * cart.desired_quantity) as subtotal, cart.desired_quantity
 FROM Products as product JOIN Cart as cart on product.id = cart.product_id
