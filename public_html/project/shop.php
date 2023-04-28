@@ -1,6 +1,7 @@
 <?php
 require_once(__DIR__ . "/../../partials/nav.php");
 
+//nff4 4/28/23
 $products = [];
 $db = getDB();
 $query = "SELECT id, name, description, category, stock, unit_price, image, visibility from Products WHERE stock > 0 AND visibility = 1";
@@ -112,7 +113,7 @@ try {
                             </div>
                             <div class="card-footer">
                                 <h5 style="display:inline-block;">
-                                    Price: <?php se($product, "unit_price"); ?>
+                                    Price: $<?php se($product, "unit_price"); ?>
                                 </h5>
                                 <div style="text-align:left; display:inline-block;">
                                     <form method="POST" action="cart.php" style="text-align:left; display:inline-block;">
