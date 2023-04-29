@@ -19,9 +19,9 @@ if (!empty($action)) {
             $stmt->bindValue(":dq", se($_POST, "desired_quantity", 0, false), PDO::PARAM_INT);
             $stmt->bindValue(":uid", get_user_id(), PDO::PARAM_INT);
             try {
-                //BUG: Using if inside of the SQL query will always make it so it shows as added item even if it was not.
+                // Using if inside of the SQL query will always make it so it shows as added item even if it was not.
                 $stmt->execute();
-                flash("Added item to cart", "success");
+                flash("Added item to cart. If you tried to add more to your cart than what was in stock, then your cart has kept your original quantity.", "success");
             } catch (PDOException $e) {
                 error_log(var_export($e, true));
                 flash("Error adding item to cart", "danger");
@@ -92,7 +92,7 @@ if (!empty($action)) {
             flash("Developer: Bug in the cart form logic", "danger");
     }
 
-    //BUG: Having this prevents the refresh add bug, but it also prevents my flash logic. I need flash logic for so the refresh add bug will just have to stay.
+    //BUG: Having this prevents the refresh add bug, but it also prevents my flash logic. I need flash logic for so the refresh add bug will just have to stay for now.
     //if (count($_POST) > 0) {
         //header("Location: cart.php");
     //}
