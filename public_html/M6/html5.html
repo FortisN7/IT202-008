@@ -21,6 +21,7 @@
   var context = canvas.getContext('2d');
 
   // Your score
+  //nff 5/4/23
   var score = 0;
   var multiplier = 1;
 
@@ -42,11 +43,11 @@
   var targetLength = 25;
   var buffer = false;
 
-  // TODO: Properties for the enemy square
+  // Properties for the enemy square
+  //nff4 5/4/23
   var enemyX = [];
   var enemyY = [];
   var enemyLength = 15;
-  //var enemyHeight = enemyLength * Math.cos(Math.PI / 6);
   var numEnemies = 0;
 
   // Determine if number a is within the range b to c (exclusive)
@@ -60,6 +61,7 @@
   var id = null;
 
   // Lives
+  // nff4 5/4/23
   var lives = 3;
 
   // Listen for keydown events
@@ -146,6 +148,7 @@
   }
 
   // Move the enemy triangle to a random position
+  //nff4 5/4/23
   function moveEnemy() {
     enemyX = []
     enemyY = []
@@ -202,11 +205,13 @@
         // Respawn the enemies
         moveEnemy();
         // Increase the score with mulitplier
+        //nff4 5/4/23
         score += multiplier;
         multiplier++;
       }
     }
     // Collide with the enemy and set multiplier to 1, lives--, numEnemies--
+    //nff4 5/4/23
     var rX;
     var rY;
     for (let i = 0; i < numEnemies; i++) {
@@ -244,6 +249,7 @@
     context.fillStyle = '#00FF00';
     context.fillRect(targetX, targetY, targetLength, targetLength);
     // Draw the enemy (triangle)
+    //nff4 5/4/23
     context.fillStyle = '#360b0b';
     for (let i = 0; i < numEnemies; i++) {
       context.beginPath();
@@ -253,6 +259,8 @@
       context.closePath();
       context.fill();
     }
+
+    //nff4 5/4/23
     // Draw the score and time remaining
     context.fillStyle = '#000000';
     context.font = '24px Arial';
