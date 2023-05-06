@@ -48,10 +48,10 @@ if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_
     var_dump($total_amount);
 
     if ($apartment != "") {
-        $finalAddress = "$address, $apartment, $city, $state, $country, $zip_code";
+        $finalAddress = "$address, $apartment, $city, $state, $zip_code, $country";
     }
     else {
-        $finalAddress = "$address, $city, $state, $country, $zip_code";
+        $finalAddress = "$address, $city, $state, $zip_code, $country";
     }
 
     $hasError = false;
@@ -142,13 +142,13 @@ if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_
         $stmt = $db->prepare($query);
         try {
             $stmt->execute([":oid" => $OrderID, ":uid" => get_user_id()]);
-            flash("Order History Saved");
+            //flash("Order History Saved");
         } catch (PDOException $e) {
             error_log(var_export($e, true));
             flash("Error fetching cart", "danger");
         }
 
-        /*// Update product's stock
+        // Update product's stock
         $query = "UPDATE Products set stock = stock - (select IFNULL(desired_quantity, 0) FROM Cart WHERE product_id = Products.id and user_id = :uid) WHERE id in (SELECT product_id from Cart where user_id = :uid)";
         $stmt = $db->prepare($query);
         try {
@@ -164,7 +164,7 @@ if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_
             $stmt->execute([":uid" => get_user_id()]);
         } catch (PDOException $e) {
             error_log("Error deleting cart: " . var_export($e, true));
-        }*/
+        }
 
         die(header("Location: orderConfirmation.php"));
     }
