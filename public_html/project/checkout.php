@@ -263,7 +263,7 @@ if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_
 <?php if ($c_unit_price > $p_unit_price) : ?>
 <?php se(number_format($p_unit_price, 2)) ?> <?php echo(" (" . number_format($diff, 2) . "%)") ?>
 <?php elseif ($c_unit_price < $p_unit_price) : ?>
-<?php se(number_format($p_unit_price, 2)) ?> <?php echo(" (" . number_format($diff, 2) . "%)") ?>
+<?php se(number_format($p_unit_price, 2)) ?> <?php echo(" (+" . number_format($diff, 2) . "%)") ?>
 <?php else : ?>
 <?php se(number_format($p_unit_price, 2)) ?>
 <?php endif; ?>
