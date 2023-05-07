@@ -27,6 +27,7 @@ if (count($cart) == 0 && !has_role("Admin")) {
 
 $stockError = false;
 
+//nff4 5/7/23
 if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_POST["first_name"]) && isset($_POST["last_name"]) && isset($_POST["address"]) && isset($_POST["city"]) && isset($_POST["state"]) && isset($_POST["country"]) && isset($_POST["zip_code"])) {
     //payment_method total_amount first_name last_name address ~apartment city state country zip_code
     $payment_method = se($_POST, "payment_method", "", false);
@@ -62,7 +63,6 @@ if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_
         flash("Total amount must not be empty", "danger");
         $hasError = true;
     }
-    //nff4 5/7/23
     if ($total_amount != $total) {
         flash("Your amount paid is not equivalent to our calculated total required.", "danger");
         $hasError = true;
@@ -72,7 +72,7 @@ if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_
         flash("First name must not be empty", "danger");
         $hasError = true;
     }
-
+    //nff4 5/7/23
     if (empty($last_name)) {
         flash("Last name must not be empty", "danger");
         $hasError = true;
@@ -93,7 +93,7 @@ if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_
         $hasError = true;
     }
 
-    if (empty($country)) {
+    if (empty($country) || $country == 0) {
         flash("Country must not be empty", "danger");
         $hasError = true;
     }
@@ -253,6 +253,7 @@ if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_
             </tr>
         </thead>
         <tbody>
+        <!-- nff4 5/7/23 -->
         <?php foreach ($cart as $c) : ?>
             <tr>
                 <td><?php se($c, "name"); ?></td>
