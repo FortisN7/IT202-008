@@ -3,8 +3,6 @@ require_once(__DIR__ . "/../../partials/nav.php");
 
 is_logged_in(true);
 
-// TODO: GET THE ACUTAL DATA NEEDED
-
 $query = "SELECT cart.id, product.id as pid, product.stock, product.name, product.unit_price as p_unit_price, cart.unit_price as c_unit_price, (product.unit_price * cart.desired_quantity) as subtotal, cart.desired_quantity
 FROM Products as product JOIN Cart as cart on product.id = cart.product_id
 WHERE cart.user_id = :uid";
@@ -29,7 +27,6 @@ if (count($cart) == 0 && !has_role("Admin")) {
 
 $stockError = false;
 
-// TODO: EDIT THIS FOR ORDERS AND THEN SEND TO CONFIRMATIONS PAGE (use hidden order id)
 if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_POST["first_name"]) && isset($_POST["last_name"]) && isset($_POST["address"]) && isset($_POST["city"]) && isset($_POST["state"]) && isset($_POST["country"]) && isset($_POST["zip_code"])) {
     //payment_method total_amount first_name last_name address ~apartment city state country zip_code
     $payment_method = se($_POST, "payment_method", "", false);
@@ -44,8 +41,8 @@ if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_
     $country = se($_POST, "country", "", false);
     $zip_code = se($_POST, "zip_code", "", false);
 
-    var_dump($total);
-    var_dump($total_amount);
+    //var_dump($total);
+    //var_dump($total_amount);
 
     if ($apartment != "") {
         $finalAddress = "$address, $apartment, $city, $state, $zip_code, $country";
@@ -55,7 +52,7 @@ if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_
     }
 
     $hasError = false;
-    // TODO: DO LAST: Add server side validation because users can change client side rules
+    // TODO: Add server side validation because users can change client side rules
     if (empty($payment_method)) {
         flash("Payment method must not be empty", "danger");
         $hasError = true;
@@ -65,6 +62,7 @@ if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_
         flash("Total amount must not be empty", "danger");
         $hasError = true;
     }
+    //nff4 5/7/23
     if ($total_amount != $total) {
         flash("Your amount paid is not equivalent to our calculated total required.", "danger");
         $hasError = true;
@@ -105,7 +103,7 @@ if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_
         $hasError = true;
     }
 
-    if (!$_POST["stockError"] && !$hasError) {
+    if ($_POST["stockError"] == false && $hasError == false) {
         $db = getDB();
         // --~id, user_id, created, total_price, address, payment_method, money_received, first_name, last_name (SELECT unit_price FROM Products WHERE id = :pid)
         $query = "INSERT INTO Orders (user_id, total_price, address, payment_method, money_received, first_name, last_name) VALUES (:uid, :tp, :addy, :pm, :mr, :fn, :ln)";
@@ -119,11 +117,11 @@ if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_
         }
     }
     else {
-        flash("There was an error with your purchase. Make sure you are submitting correct information. (Orders Table)", "warning");
+        //flash("There was an error with your purchase. Make sure you are submitting correct information. (Orders Table)", "warning");
+        $hasError = true;
     }
 
-    // TODO
-    if (!$_POST["stockError"] && !$hasError) {
+    if ($_POST["stockError"] == false && $hasError == false) {
         $db = getDB();
         $OrderID = "";
         $query = "SELECT id FROM Orders ORDER BY created DESC LIMIT 1";
@@ -169,7 +167,7 @@ if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_
         die(header("Location: order_confirmation.php"));
     }
     else {
-        flash("There was an error with your purchase. Make sure you are submitting correct information. (OrderItems Table)", "warning");
+        //flash("There was an error with your purchase. Make sure you are submitting correct information. (OrderItems Table)", "warning");
         //die(header("Location: cart.php"));
     }
 }
