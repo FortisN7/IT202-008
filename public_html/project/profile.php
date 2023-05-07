@@ -134,6 +134,8 @@ $username = get_username();
         </div>
         <input type="submit" class="mt-3 btn btn-primary" value="Update Profile" name="save" />
     </form>
+
+    
 </div>
 
 <script>

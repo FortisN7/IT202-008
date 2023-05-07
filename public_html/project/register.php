@@ -1,28 +1,7 @@
 <?php
 require_once(__DIR__ . "/../../partials/nav.php");
 ?>
-<div class="container-fluid">
-    <h1>Register</h1>
-    <form onsubmit="return validate(this)" method="POST">
-        <div class="mb-3">
-            <label class="form-label" for="email">Email</label>
-            <input class="form-control" type="email" id="email" name="email" required maxlength="100" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="username">Username</label>
-            <input class="form-control" type="text" name="username" required minlength="3" maxlength="30" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="pw">Password</label>
-            <input class="form-control" type="password" id="pw" name="password" required minlength="8" maxlength="60" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="confirm">Confirm</label>
-            <input class="form-control" type="password" name="confirm" required minlength="8" maxlength="60" />
-        </div>
-        <input type="submit" class="mt-3 btn btn-primary" value="Register" />
-    </form>
-</div>
+
 <script>
     function validate(form) {
         //TODO 1: implement JavaScript validation
@@ -137,12 +116,36 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm
         try {
             $stmt->execute([":email" => $email, ":password" => $hash, ":username" => $username]);
             flash("Successfully registered!");
+            // TODO: Should then redirect to login
+            die(header("Location: login.php"));
         } catch (PDOException $e) {
             users_check_duplicate($e->errorInfo);
         }
     }
 }
 ?>
+<div class="container-fluid">
+    <h1>Register</h1>
+    <form onsubmit="return validate(this)" method="POST">
+        <div class="mb-3">
+            <label class="form-label" for="email">Email</label>
+            <input class="form-control" type="email" id="email" name="email" required maxlength="100" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="username">Username</label>
+            <input class="form-control" type="text" name="username" required minlength="3" maxlength="30" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="pw">Password</label>
+            <input class="form-control" type="password" id="pw" name="password" required minlength="8" maxlength="60" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="confirm">Confirm</label>
+            <input class="form-control" type="password" name="confirm" required minlength="8" maxlength="60" />
+        </div>
+        <input type="submit" class="mt-3 btn btn-primary" value="Register" />
+    </form>
+</div>
 <?php
 require_once(__DIR__ . "/../../partials/flash.php");
 ?>
