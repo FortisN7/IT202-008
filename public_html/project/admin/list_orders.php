@@ -53,7 +53,7 @@ endforeach;
 //var_dump($orderItems);
 ?>
 <div class="container-fluid">
-    <h1>Your Most Recent Orders</h1>
+    <h1>All Orders</h1>
     <br>
     <?php //$orderItems[$iterable]["order_id"] ?>
     <?php $prevOrderID = -1; ?>
