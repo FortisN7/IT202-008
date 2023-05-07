@@ -64,7 +64,7 @@ endforeach;
             <?php $doneItems = true; ?>
         <?php endif; ?>
         <?php if ($prevOrderID != $currOrderID) : ?>
-            <h3>Order ID: <?php se($currOrderID) ?></h3>
+            <h3>Order ID: <?php se($OrderID); ?> by <?php se(get_username()); ?></h3>
         <?php endif; ?>
         <table class="table table-striped" id="<?php se($currOrderID) ?>">
             <?php if ($prevOrderID != $currOrderID) : ?>

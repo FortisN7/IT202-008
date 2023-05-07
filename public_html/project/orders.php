@@ -66,6 +66,7 @@ endforeach;
         <?php if ($prevOrderID != $currOrderID) : ?>
             <h3>Order ID: <?php se($currOrderID) ?></h3>
         <?php endif; ?>
+        <!-- maybe could've added a foreach inside here and check if the orderID is the same as the previous and if it is to keep it inside the same table but idk -->
         <table class="table table-striped" id="<?php se($currOrderID) ?>">
             <?php if ($prevOrderID != $currOrderID) : ?>
                 <thead>
