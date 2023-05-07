@@ -166,7 +166,7 @@ if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_
             error_log("Error deleting cart: " . var_export($e, true));
         }
 
-        die(header("Location: orderConfirmation.php"));
+        die(header("Location: order_confirmation.php"));
     }
     else {
         flash("There was an error with your purchase. Make sure you are submitting correct information. (OrderItems Table)", "warning");
@@ -258,16 +258,15 @@ if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_
         <?php foreach ($cart as $c) : ?>
             <tr>
                 <td><?php se($c, "name"); ?></td>
-                <td>$
-                    <?php $c_unit_price = se($c, "c_unit_price", "", false); $p_unit_price = se($c, "p_unit_price", "", false); ?>
-                    <?php $diff = (($p_unit_price - $c_unit_price)/($c_unit_price))*100?>
-                    <?php if ($c_unit_price > $p_unit_price) : ?>
-                        <?php se($c, "p_unit_price") ?> <?php echo(" (" . number_format($diff, 2) . "%)") ?>
-                    <?php elseif ($c_unit_price < $p_unit_price) : ?>
-                        <?php se($c, "p_unit_price") ?> <?php echo(" (" . number_format($diff, 2) . "%)") ?>
-                    <?php else : ?>
-                        <?php se($c, "p_unit_price") ?>
-                    <?php endif; ?>
+                <td>$<?php $c_unit_price = se($c, "c_unit_price", "", false); $p_unit_price = se($c, "p_unit_price", "", false); ?>
+<?php $diff = (($p_unit_price - $c_unit_price)/($c_unit_price))*100?>
+<?php if ($c_unit_price > $p_unit_price) : ?>
+<?php se(number_format($p_unit_price, 2)) ?> <?php echo(" (" . number_format($diff, 2) . "%)") ?>
+<?php elseif ($c_unit_price < $p_unit_price) : ?>
+<?php se(number_format($p_unit_price, 2)) ?> <?php echo(" (" . number_format($diff, 2) . "%)") ?>
+<?php else : ?>
+<?php se(number_format($p_unit_price, 2)) ?>
+<?php endif; ?>
                 </td>
                 <td>
                     <!-- Making sure that desired_quantity is less than available stock in case stock changed after a user's cart was made -->
@@ -283,7 +282,8 @@ if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_
                 <!-- Calculating the total by taking each subtotal of each item -->
                 <?php $total += (float)(se($c, "subtotal", 0, false)); ?>
                 <!-- There might be an adding error here, but I don't think it matters since it's insignificant and we're round at the penny for the final subtotal -->
-                <td>$<?php se($c, "subtotal"); ?></td>
+                <td>$<?php $subtotal = se($c, "subtotal", "", false); ?><?php se(number_format($subtotal, 2)); ?>
+                </td>
                 <td>
                     <a style="display:inline-block" class="btn btn-primary" href="<?php echo('view_product.php?id='); ?><?php se($c, "pid"); ?>">View</a>
                 </td>
@@ -317,7 +317,7 @@ if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_
         </select>
         <br>
         <label for="total_amount">Amount Paid:</label>
-        <input type="number" id="total_amount" name="total_amount" step="0.01" min="<?php se(number_format($total, 2)) ?>" max="<?php se(number_format($total, 2)) ?>" required>
+        <input type="number" id="total_amount" name="total_amount" step="0.01" min="<?php se(number_format($total, 2, '.', "")) ?>" max="<?php se(number_format($total, 2, '.', "")) ?>" required>
         <br>
         <label for="first_name">First Name:</label>
         <input type="text" id="first_name" name="first_name" maxlength="60" required>
@@ -608,7 +608,7 @@ if (isset($_POST["payment_method"]) && isset($_POST["total_amount"]) && isset($_
         <input type="text" id="zip_code" name="zip_code" pattern="\d{5}" required>
         <br>
         <input name="stockError" type="hidden" value="<?php se($stockError) ?>" >
-        <input type="hidden" name="total" value="<?php se(number_format($total, 2)); ?>" />
+        <input type="hidden" name="total" value="<?php se(number_format($total, 2, ".", "")); ?>" />
         <input type="submit" <?php if ($stockError) : ?> disabled value="Stock not available" <?php else : ?> value="Submit Order" <?php endif; ?>>
     </form>
 <div>
