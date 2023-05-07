@@ -1,82 +1,6 @@
 <?php
 require_once(__DIR__ . "/../../partials/nav.php");
-?>
-<div class="container-fluid">
-    <h1 >Login</h1>
-    <form onsubmit="return validate(this)" method="POST">
-        <div class="mb-3">
-            <label class="form-label" for="email">Username/Email</label>
-            <input class="form-control" type="text" id="email" name="email" required />
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="pw">Password</label>
-            <input class="form-control" type="password" id="pw" name="password" required minlength="8" />
-        </div>
-        <input type="submit" class="mt-3 btn btn-primary" value="Login" />
-    </form>
-</div>
-<script>
-    function validate(form) {
-        //TODO 1: implement JavaScript validation
-        //ensure it returns false for an error and true for success
-        
-        let noError = true;
-        let email = form.email.value;
-        let password = form.password.value;
 
-        // Uses flash() from helpers.js
-        if (email.indexOf("@") !== -1) {
-            //treat input as email
-            if (email == "") {
-                flash("Email must not be empty");
-                noError = false;
-            }
-            if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
-                flash("Must be a valid email");
-                noError = false;
-            }
-            if (email.length < 3) {
-                flash("Email is too short");
-                noError = false;
-            }
-            if (email.length > 100) {
-                flash("Email is too long");
-                noError = false;
-            }
-        }
-        else {
-            //treat input as username
-            if (email == "") {
-                flash("Username must not be empty");
-                noError = false;
-            }
-            if (email.length < 3) {
-                flash("Username is too short");
-                noError = false;
-            }
-            if (email.length > 30) {
-                flash("Username is too long");
-                noError = false;
-            }
-        } 
-
-        if (password == "") {
-            flash("Password must not be empty");
-            noError = false;
-        }
-        if (password.length < 8) {
-            flash("Password is too short");
-            noError = false;
-        }
-        if (password.length > 60) {
-            flash("Password is too long");
-            noError = false;
-        }
-
-        return noError;
-    }
-</script>
-<?php
 //TODO 2: add PHP Code
 if (isset($_POST["email"]) && isset($_POST["password"])) {
     $email = se($_POST, "email", "", false);
@@ -161,6 +85,84 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
     }
 }
 ?>
+
+<script>
+    function validate(form) {
+        //TODO 1: implement JavaScript validation
+        //ensure it returns false for an error and true for success
+        
+        let noError = true;
+        let email = form.email.value;
+        let password = form.password.value;
+
+        // Uses flash() from helpers.js
+        if (email.indexOf("@") !== -1) {
+            //treat input as email
+            if (email == "") {
+                flash("Email must not be empty");
+                noError = false;
+            }
+            if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+                flash("Must be a valid email");
+                noError = false;
+            }
+            if (email.length < 3) {
+                flash("Email is too short");
+                noError = false;
+            }
+            if (email.length > 100) {
+                flash("Email is too long");
+                noError = false;
+            }
+        }
+        else {
+            //treat input as username
+            if (email == "") {
+                flash("Username must not be empty");
+                noError = false;
+            }
+            if (email.length < 3) {
+                flash("Username is too short");
+                noError = false;
+            }
+            if (email.length > 30) {
+                flash("Username is too long");
+                noError = false;
+            }
+        } 
+
+        if (password == "") {
+            flash("Password must not be empty");
+            noError = false;
+        }
+        if (password.length < 8) {
+            flash("Password is too short");
+            noError = false;
+        }
+        if (password.length > 60) {
+            flash("Password is too long");
+            noError = false;
+        }
+
+        return noError;
+    }
+</script>
+
+<div class="container-fluid">
+    <h1 >Login</h1>
+    <form onsubmit="return validate(this)" method="POST">
+        <div class="mb-3">
+            <label class="form-label" for="email">Username/Email</label>
+            <input class="form-control" type="text" id="email" name="email" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="pw">Password</label>
+            <input class="form-control" type="password" id="pw" name="password" required minlength="8" />
+        </div>
+        <input type="submit" class="mt-3 btn btn-primary" value="Login" />
+    </form>
+</div>
+
 <?php
 require_once(__DIR__ . "/../../partials/flash.php");
 ?>
