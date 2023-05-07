@@ -51,6 +51,24 @@ foreach ($orderItems as $i):
     }
 endforeach;
 
+$query = "SELECT username FROM Users WHERE id = :id";
+$iterable = 0;
+foreach ($orderItems as $i):
+    $stmt = $db->prepare($query);
+    try {
+        $stmt->execute([":id" => se($i, "user_id", "", false)]);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($results) {
+            $products = $results;
+            $orderItems[$iterable]["username"] = $products[0]["username"];
+            $iterable++;
+        }
+    } catch (PDOException $e) {
+        error_log(var_export($e, true));
+        flash("Error fetching products", "danger");
+    }
+endforeach;
+
 //var_dump($orderItems);
 ?>
 <div class="container-fluid">
@@ -65,7 +83,7 @@ endforeach;
             <?php $doneItems = true; ?>
         <?php endif; ?>
         <?php if ($prevOrderID != $currOrderID) : ?>
-            <h3>Order ID: <?php se($currOrderID); ?> by <?php se(get_username()); ?></h3>
+            <h3>Order ID: <?php se($currOrderID); ?> by <?php se($orderItems[$iterable]["username"]); ?></h3>
         <?php endif; ?>
         <table class="table table-striped" id="<?php se($currOrderID) ?>">
             <?php if ($prevOrderID != $currOrderID) : ?>
