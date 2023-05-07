@@ -2,6 +2,7 @@
 require_once(__DIR__ . "/../../../partials/nav.php");
 
 is_logged_in(true);
+//BUG: takes you to wrong page
 
 /*$db = getDB();
 $query = "SELECT id FROM Orders ORDER BY created DESC LIMIT 10";
@@ -64,7 +65,7 @@ endforeach;
             <?php $doneItems = true; ?>
         <?php endif; ?>
         <?php if ($prevOrderID != $currOrderID) : ?>
-            <h3>Order ID: <?php se($OrderID); ?> by <?php se(get_username()); ?></h3>
+            <h3>Order ID: <?php se($currOrderID); ?> by <?php se(get_username()); ?></h3>
         <?php endif; ?>
         <table class="table table-striped" id="<?php se($currOrderID) ?>">
             <?php if ($prevOrderID != $currOrderID) : ?>
