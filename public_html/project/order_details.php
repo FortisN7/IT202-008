@@ -4,6 +4,12 @@ require_once(__DIR__ . "/../../partials/nav.php");
 $TABLE_NAME = "Products";
 $OrderID = se($_GET, "order_id", -1, false);
 
+if ($OrderID < 2) {
+    flash("That page doesn't exist!", "warning");
+    die(header("Location: $BASE_PATH/home.php"));
+}
+//BUG: can still access $OrderID's that are higher than what exist
+
 //get the table definition
 $result = [];
 $db = getDB();
