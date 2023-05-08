@@ -45,6 +45,14 @@ IT 202 Project Proposal
 
 **Website Link: [https://nff4-prod-it202.herokuapp.com/project/home.php](https://nff4-prod-it202.herokuapp.com/project/home.php)**
 
+**Milestone 1 Link: [https://github.com/FortisN7/IT202-008/blob/prod/public_html/project/Milestone1.md](https://github.com/FortisN7/IT202-008/blob/prod/public_html/project/Milestone1.md)**
+
+**Milestone 2 Link: [https://github.com/FortisN7/IT202-008/blob/prod/public_html/project/Milestone2.md](https://github.com/FortisN7/IT202-008/blob/prod/public_html/project/Milestone2.md)**
+
+**Milestone 3 Link: [https://github.com/FortisN7/IT202-008/blob/prod/public_html/project/Milestone3.md](https://github.com/FortisN7/IT202-008/blob/prod/public_html/project/Milestone3.md)**
+
+**Youtube Video Link: []()**
+
 **Your Name: Nicholas Fortis**
 
 **Milestone Features:**
