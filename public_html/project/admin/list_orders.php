@@ -1,8 +1,10 @@
 <?php
 require_once(__DIR__ . "/../../../partials/nav.php");
 
-is_logged_in(true);
-//BUG: takes you to wrong page
+if (!has_role("Admin")) {
+    flash("You don't have permission to view this page", "warning");
+    die(header("Location: $BASE_PATH/home.php"));
+}
 
 /*$db = getDB();
 $query = "SELECT id FROM Orders ORDER BY created DESC LIMIT 10";
